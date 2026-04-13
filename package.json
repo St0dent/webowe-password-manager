@@ -1,0 +1,24 @@
+{
+  "name": "webowe-password-manager",
+  "version": "1.0.0",
+  "description": "Repo do projektu password manager",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/St0dent/webowe-password-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/St0dent/webowe-password-manager/issues"
+  },
+  "homepage": "https://github.com/St0dent/webowe-password-manager#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
