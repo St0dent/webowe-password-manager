@@ -2,7 +2,7 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-  "login": "zkepa",
+  "login": "admin",
   "password": "1234"
 }
 
@@ -20,13 +20,14 @@ Content-Type: application/json
 
 POST http://localhost:3000/add
 Content-Type: application/json
+Authorization: 0.a72z6z2vm8l
 
 {
-  "login": "zkepa",
-  "title": "Facebook",
-  "password": "haslo123"
+  "title": "Instagram",
+  "password": "superHaslo234"
 }
 
 ###
 
-GET http://localhost:3000/passwords/admin
+GET http://localhost:3000/passwords
+Authorization: 0.a72z6z2vm8l

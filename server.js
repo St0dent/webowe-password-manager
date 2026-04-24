@@ -30,38 +30,61 @@ app.post("/register", (req, res) => {
   res.send("OK");
 });
 
+
 app.post("/login", (req, res) => {
   const { login, password } = req.body;
 
   const users = readFile(USERS_FILE);
-
   const user = users.find(u => u.login === login && u.password === password);
 
   if (!user) {
     return res.send("Błąd logowania");
   }
 
-  res.send("Zalogowano");
+  const token = Math.random().toString(36);
+  user.token = token;
+  writeFile(USERS_FILE, users);
+
+  res.json({ token });
 });
 
-app.post("/add", (req, res) => {
-  const { login, title, password } = req.body;
 
+app.post("/add", (req, res) => {
+  const token = req.headers.authorization;
+
+  const users = readFile(USERS_FILE);
+  const user = users.find(u => u.token === token);
+
+  if (!user) {
+    return res.status(401).send("Nie jesteś zalogowany");
+  }
+
+  const { title, password } = req.body;
   const passwords = readFile(PASSWORDS_FILE);
 
-  passwords.push({ login, title, password });
+  passwords.push({
+    login: user.login,
+    title,
+    password
+  });
 
   writeFile(PASSWORDS_FILE, passwords);
 
   res.send("Dodano hasło");
 });
 
-app.get("/passwords/:login", (req, res) => {
-  const { login } = req.params;
+
+app.get("/passwords", (req, res) => {
+  const token = req.headers.authorization;
+  const users = readFile(USERS_FILE);
+  const user = users.find(u => u.token === token);
+
+  if (!user) {
+    return res.status(401).send("Nie jesteś zalogowany");
+  }
 
   const passwords = readFile(PASSWORDS_FILE);
-
-  const userPasswords = passwords.filter(p => p.login === login);
+  const userPasswords = passwords.filter(p => p.login === user.login);
 
   res.json(userPasswords);
 });
