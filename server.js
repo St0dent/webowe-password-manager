@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const crypto = require("crypto");
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,24 @@ function readFile(file) {
 
 function writeFile(file, data) {
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
+}
+
+
+const SECRET = "12345678901234567890123456789012";
+const IV = Buffer.alloc(16, 0);
+
+function encrypt(text) {
+  const cipher = crypto.createCipheriv("aes-256-cbc", SECRET, IV);
+  let encrypted = cipher.update(text, "utf8", "hex");
+  encrypted += cipher.final("hex");
+  return encrypted;
+}
+
+function decrypt(text) {
+  const decipher = crypto.createDecipheriv("aes-256-cbc", SECRET, IV);
+  let decrypted = decipher.update(text, "hex", "utf8");
+  decrypted += decipher.final("utf8");
+  return decrypted;
 }
 
 app.post("/register", (req, res) => {
@@ -65,7 +84,7 @@ app.post("/add", (req, res) => {
   passwords.push({
     login: user.login,
     title,
-    password
+    password: encrypt(password)
   });
 
   writeFile(PASSWORDS_FILE, passwords);
@@ -76,7 +95,9 @@ app.post("/add", (req, res) => {
 
 app.get("/passwords", (req, res) => {
   const token = req.headers.authorization;
+
   const users = readFile(USERS_FILE);
+
   const user = users.find(u => u.token === token);
 
   if (!user) {
@@ -84,7 +105,24 @@ app.get("/passwords", (req, res) => {
   }
 
   const passwords = readFile(PASSWORDS_FILE);
-  const userPasswords = passwords.filter(p => p.login === user.login);
+
+  const userPasswords = passwords
+  .filter(p => p.login === user.login)
+  .map(p => {
+    try {
+      return {
+        login: p.login,
+        title: p.title,
+        password: decrypt(p.password)
+      };
+    } catch (err) {
+      return {
+        login: p.login,
+        title: p.title,
+        password: p.password
+      };
+    }
+  });
 
   res.json(userPasswords);
 });
