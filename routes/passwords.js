@@ -58,4 +58,51 @@ router.get("/passwords", auth, (req, res) => {
   res.json(userPasswords);
 });
 
+
+router.delete("/password/:title", auth, (req, res) => {
+  const passwords = readFile(PASSWORDS_FILE);
+  const newPasswords = passwords.filter(
+    p => !(p.login === req.user.login && p.title === req.params.title)
+  );
+
+  writeFile(PASSWORDS_FILE, newPasswords);
+
+  res.send("Usunięto");
+});
+
+
+router.put("/password/:title", auth, (req, res) => {
+  const { newPassword } = req.body;
+  const passwords = readFile(PASSWORDS_FILE);
+
+  const entry = passwords.find(
+    p => p.login === req.user.login && p.title === req.params.title
+  );
+  if (!entry) return res.send("Nie znaleziono");
+
+  entry.password = encrypt(newPassword, req.user.key);
+
+  writeFile(PASSWORDS_FILE, passwords);
+
+  res.send("Zmieniono");
+});
+
+
+router.get("/search", auth, (req, res) => {
+  const query = req.query.q;
+  const passwords = readFile(PASSWORDS_FILE);
+
+  const results = passwords
+    .filter(p =>
+      p.login === req.user.login &&
+      p.title.toLowerCase().includes(query.toLowerCase())
+    )
+    .map(p => ({
+      title: p.title,
+      password: decrypt(p.password, req.user.key)
+    }));
+
+  res.json(results);
+});
+
 module.exports = router;

@@ -8,8 +8,9 @@
   {
     "login": "admin",
     "password": "$2b$10$C243QMlX/JnofUzGOxH57OC4mcJtiCUrWJ9.8TFPwi27lJ2rIL8RO",
-    "token": "0.4qgf8dwdtkf",
-    "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+    "token": "0.owierdwwpoi",
+    "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+    "tokenCreatedAt": 1777325961021
   },
   {
     "login": "zkepa",
