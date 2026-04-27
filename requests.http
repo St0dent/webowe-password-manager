@@ -3,8 +3,8 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-  "login": "zkepa",
-  "password": "haslo12"
+  "login": "knowak",
+  "password": "haslo123"
 }
 
 ###
@@ -13,15 +13,15 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "login": "jkowalski",
-  "password": "1234"
+  "login": "knowak",
+  "password": "haslo123"
 }
 
 ###
 
 POST http://localhost:3000/add
 Content-Type: application/json
-Authorization: 0.2qttmurmz6i
+Authorization: 0.s6k97i9qcm
 
 {
   "title": "Instagram",
@@ -31,4 +31,4 @@ Authorization: 0.2qttmurmz6i
 ###
 
 GET http://localhost:3000/passwords
-Authorization: 0.x8l20lpqj78
+Authorization: 0.4qgf8dwdtkf

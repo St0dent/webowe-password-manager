@@ -2,13 +2,13 @@
   {
     "login": "jkowalski",
     "password": "$2b$10$8eOKWnClz2nlcH8T6yPWHutnElYA.11SzpDoLvaJBVbd3SDxsDnI2",
-    "token": "0.x8l20lpqj78",
+    "token": "0.49xznr7iip2",
     "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
   },
   {
     "login": "admin",
     "password": "$2b$10$C243QMlX/JnofUzGOxH57OC4mcJtiCUrWJ9.8TFPwi27lJ2rIL8RO",
-    "token": "0.lktxl5hm7n",
+    "token": "0.4qgf8dwdtkf",
     "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
   },
   {
@@ -16,5 +16,11 @@
     "password": "$2b$10$2ukDxFQ7bwBfkEdrU0QHeepOYO6DrxMZ4JGhbJ/CrhI8pOBxmouMu",
     "token": "0.2qttmurmz6i",
     "key": "1b559c5f440e8028f9d80fb57d550e19210a197fdc708f9328c7e3b0b492c8fc"
+  },
+  {
+    "login": "knowak",
+    "password": "$2b$10$VHHUlhqX0HWhdFUnpMzIDutioDlY30x05qs3J9yQn6eUztmLPk3Xm",
+    "token": "0.s6k97i9qcm",
+    "key": "a15f8ae07675bfb96e084bfb4f52fb2c22091061aae86e0eb76a55f4e52dd74e"
   }
 ]
