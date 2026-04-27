@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "login": "zkepa",
-  "password": "1234"
+  "password": "haslo12"
 }
 
 ###
@@ -13,7 +13,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "login": "zkepa",
+  "login": "jkowalski",
   "password": "1234"
 }
 
@@ -21,14 +21,14 @@ Content-Type: application/json
 
 POST http://localhost:3000/add
 Content-Type: application/json
-Authorization: 0.pqnl5su4vx
+Authorization: 0.2qttmurmz6i
 
 {
-  "title": "Facebook",
-  "password": "megahaslo123"
+  "title": "Instagram",
+  "password": "haslo123"
 }
 
 ###
 
 GET http://localhost:3000/passwords
-Authorization: 0.pqnl5su4vx
+Authorization: 0.x8l20lpqj78

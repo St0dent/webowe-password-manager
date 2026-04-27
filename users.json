@@ -1,12 +1,20 @@
 [
   {
+    "login": "jkowalski",
+    "password": "$2b$10$8eOKWnClz2nlcH8T6yPWHutnElYA.11SzpDoLvaJBVbd3SDxsDnI2",
+    "token": "0.x8l20lpqj78",
+    "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+  },
+  {
     "login": "admin",
-    "password": "1234",
-    "token": "0.r0n0nqfq9j"
+    "password": "$2b$10$C243QMlX/JnofUzGOxH57OC4mcJtiCUrWJ9.8TFPwi27lJ2rIL8RO",
+    "token": "0.lktxl5hm7n",
+    "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
   },
   {
     "login": "zkepa",
-    "password": "1234",
-    "token": "0.pqnl5su4vx"
+    "password": "$2b$10$2ukDxFQ7bwBfkEdrU0QHeepOYO6DrxMZ4JGhbJ/CrhI8pOBxmouMu",
+    "token": "0.2qttmurmz6i",
+    "key": "1b559c5f440e8028f9d80fb57d550e19210a197fdc708f9328c7e3b0b492c8fc"
   }
 ]

@@ -1,6 +1,8 @@
 const express = require("express");
 const fs = require("fs");
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
+
 
 const app = express();
 app.use(express.json());
@@ -17,51 +19,70 @@ function writeFile(file, data) {
 }
 
 
-const SECRET = "12345678901234567890123456789012";
-const IV = Buffer.alloc(16, 0);
+function encrypt(text, key) {
+  const iv = Buffer.alloc(16, 0);
+  const cipher = crypto.createCipheriv(
+    "aes-256-cbc",
+    Buffer.from(key, "hex"),
+    iv
+  );
 
-function encrypt(text) {
-  const cipher = crypto.createCipheriv("aes-256-cbc", SECRET, IV);
   let encrypted = cipher.update(text, "utf8", "hex");
   encrypted += cipher.final("hex");
+
   return encrypted;
 }
 
-function decrypt(text) {
-  const decipher = crypto.createDecipheriv("aes-256-cbc", SECRET, IV);
+function decrypt(text, key) {
+  const iv = Buffer.alloc(16, 0);
+  const decipher = crypto.createDecipheriv(
+    "aes-256-cbc",
+    Buffer.from(key, "hex"),
+    iv
+  );
+
   let decrypted = decipher.update(text, "hex", "utf8");
   decrypted += decipher.final("utf8");
+
   return decrypted;
 }
 
-app.post("/register", (req, res) => {
-  const { login, password } = req.body;
 
+app.post("/register", async (req, res) => {
+  const { login, password } = req.body;
   const users = readFile(USERS_FILE);
 
   if (users.find(u => u.login === login)) {
-    return res.send("Użytkownik już istnieje");
+    return res.send("User istnieje");
   }
 
-  users.push({ login, password });
+  const hash = await bcrypt.hash(password, 10);
+
+  users.push({
+    login,
+    password: hash
+  });
   writeFile(USERS_FILE, users);
 
   res.send("OK");
 });
 
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const { login, password } = req.body;
-
   const users = readFile(USERS_FILE);
-  const user = users.find(u => u.login === login && u.password === password);
+  const user = users.find(u => u.login === login);
 
-  if (!user) {
-    return res.send("Błąd logowania");
-  }
+  if (!user) return res.send("Błąd");
+
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid) return res.send("Błąd");
 
   const token = Math.random().toString(36);
+  const key = crypto.createHash("sha256").update(password).digest("hex");
   user.token = token;
+  user.key = key;
+
   writeFile(USERS_FILE, users);
 
   res.json({ token });
@@ -70,13 +91,10 @@ app.post("/login", (req, res) => {
 
 app.post("/add", (req, res) => {
   const token = req.headers.authorization;
-
   const users = readFile(USERS_FILE);
   const user = users.find(u => u.token === token);
 
-  if (!user) {
-    return res.status(401).send("Nie jesteś zalogowany");
-  }
+  if (!user) return res.status(401).send("Brak auth");
 
   const { title, password } = req.body;
   const passwords = readFile(PASSWORDS_FILE);
@@ -84,46 +102,42 @@ app.post("/add", (req, res) => {
   passwords.push({
     login: user.login,
     title,
-    password: encrypt(password)
+    password: encrypt(password, user.key)
   });
 
   writeFile(PASSWORDS_FILE, passwords);
 
-  res.send("Dodano hasło");
+  res.send("OK");
 });
 
 
 app.get("/passwords", (req, res) => {
   const token = req.headers.authorization;
-
   const users = readFile(USERS_FILE);
-
   const user = users.find(u => u.token === token);
 
-  if (!user) {
-    return res.status(401).send("Nie jesteś zalogowany");
+  if (!user || !user.key) {
+    return res.status(401).send("Brak klucza - zaloguj się ponownie");
   }
 
   const passwords = readFile(PASSWORDS_FILE);
 
   const userPasswords = passwords
-  .filter(p => p.login === user.login)
-  .map(p => {
-    try {
-      return {
-        login: p.login,
-        title: p.title,
-        password: decrypt(p.password)
-      };
-    } catch (err) {
-      return {
-        login: p.login,
-        title: p.title,
-        password: p.password
-      };
-    }
-  });
-
+    .filter(p => p.login === user.login)
+    .map(p => {
+      try {
+        return {
+          title: p.title,
+          password: decrypt(p.password, user.key)
+        };
+      } catch (err) {
+        return {
+          title: p.title,
+          password: "Błąd odszyfrowania"
+        };
+      }
+    });
+    
   res.json(userPasswords);
 });
 
