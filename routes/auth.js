@@ -6,6 +6,20 @@ const crypto = require("crypto");
 const { readFile, writeFile } = require("../utils/files");
 const USERS_FILE = "./data/users.json";
 
+function auth(req, res, next) {
+  const token = req.headers.authorization;
+
+  const users = readFile(USERS_FILE);
+  const user = users.find(u => u.token === token);
+
+  if (!user) {
+    return res.status(401).json({ message: "Brak autoryzacji" });
+  }
+
+  req.user = user;
+  next();
+}
+
 
 router.post("/register", async (req, res) => {
     const { login, password } = req.body;
@@ -19,12 +33,13 @@ router.post("/register", async (req, res) => {
 
     users.push({
         login,
-        password: hash
+        password: hash,
+        role: "user"
     });
 
     writeFile(USERS_FILE, users);
 
-    res.send("OK");
+    res.send("Zarejestrowano nowego użytkownika");
 });
 
 
@@ -52,6 +67,24 @@ router.post("/login", async (req, res) => {
     writeFile(USERS_FILE, users);
 
     res.json({ token });
+});
+
+
+router.post("/logout", auth, (req, res) => {
+  const users = readFile(USERS_FILE);
+  const user = users.find(u => u.login === req.user.login);
+
+  if (!user) {
+    return res.status(404).json({ message: "Nie znaleziono usera" });
+  }
+
+  delete user.token;
+  delete user.key;
+  delete user.tokenCreatedAt;
+
+  writeFile(USERS_FILE, users);
+
+  res.json({ message: "Wylogowano" });
 });
 
 module.exports = router;

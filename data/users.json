@@ -1,27 +1,31 @@
 [
   {
-    "login": "jkowalski",
-    "password": "$2b$10$8eOKWnClz2nlcH8T6yPWHutnElYA.11SzpDoLvaJBVbd3SDxsDnI2",
-    "token": "0.49xznr7iip2",
-    "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
-  },
-  {
     "login": "admin",
-    "password": "$2b$10$C243QMlX/JnofUzGOxH57OC4mcJtiCUrWJ9.8TFPwi27lJ2rIL8RO",
-    "token": "0.owierdwwpoi",
-    "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
-    "tokenCreatedAt": 1777325961021
+    "password": "$2b$10$YXrXwdnYEvakqEyTpJv67.sNIh6/Bl1Q9inNZRafLD90oeGokpyYu",
+    "role": "admin"
   },
   {
     "login": "zkepa",
-    "password": "$2b$10$2ukDxFQ7bwBfkEdrU0QHeepOYO6DrxMZ4JGhbJ/CrhI8pOBxmouMu",
-    "token": "0.2qttmurmz6i",
-    "key": "1b559c5f440e8028f9d80fb57d550e19210a197fdc708f9328c7e3b0b492c8fc"
+    "password": "$2b$10$sYfBelmq/jzUD1KlDnDgzuX8W55wbFZl5O7zG04JSbE8bQGIDQu8u",
+    "role": "user",
+    "token": "0.jyybuav2k1b",
+    "key": "a15f8ae07675bfb96e084bfb4f52fb2c22091061aae86e0eb76a55f4e52dd74e",
+    "tokenCreatedAt": 1777328450601
+  },
+  {
+    "login": "jkowalski",
+    "password": "$2b$10$.KgN6q3XSrrGGfBmxsVdb.A4MM9Ra3Llk9irUeSCfZIY19Z9a8EnC",
+    "role": "user",
+    "token": "0.daa9ahhum0k",
+    "key": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+    "tokenCreatedAt": 1777328730078
   },
   {
     "login": "knowak",
-    "password": "$2b$10$VHHUlhqX0HWhdFUnpMzIDutioDlY30x05qs3J9yQn6eUztmLPk3Xm",
-    "token": "0.s6k97i9qcm",
-    "key": "a15f8ae07675bfb96e084bfb4f52fb2c22091061aae86e0eb76a55f4e52dd74e"
+    "password": "$2b$10$xjG8qvblRu0ZjqID5splRuZViwyOs64Ws4G3U2Mu9u12WDQ3Dr6.S",
+    "role": "user",
+    "token": "0.a0ks6swv27",
+    "key": "6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84118090",
+    "tokenCreatedAt": 1777328692999
   }
 ]

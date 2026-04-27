@@ -3,8 +3,8 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-  "login": "knowak",
-  "password": "haslo123"
+  "login": "admin",
+  "password": "abc123"
 }
 
 ###
@@ -14,35 +14,35 @@ Content-Type: application/json
 
 {
   "login": "admin",
-  "password": "1234"
+  "password": "haslo123"
 }
 
 ###
 
 POST http://localhost:3000/add
 Content-Type: application/json
-Authorization: 0.owierdwwpoi
+Authorization: 0.b79f4jssl2d
 
 {
   "title": "Facebook",
-  "password": "haslo123"
+  "password": "alla"
 }
 
 ###
 
 GET http://localhost:3000/passwords
-Authorization: 0.49xznr7iip2
+Authorization: 0.jyybuav2k1b
 
 ###
 
-DELETE http://localhost:3000/password/Facebook
-Authorization: 0.owierdwwpoi
+DELETE http://localhost:3000/password/1777327231271
+Authorization: 0.dm6q2tb4ase
 
 ###
 
-PUT http://localhost:3000/password/Facebook
+PUT http://localhost:3000/password/1777328503224
 Content-Type: application/json
-Authorization: 0.owierdwwpoi
+Authorization: 0.jyybuav2k1b
 
 {
   "newPassword": "nowehaslo"
@@ -51,4 +51,9 @@ Authorization: 0.owierdwwpoi
 ###
 
 GET http://localhost:3000/search?q=on
-Authorization: 0.owierdwwpoi
+Authorization: 0.jyybuav2k1b
+
+###
+
+POST http://localhost:3000/logout
+Authorization: 0.b79f4jssl2d
