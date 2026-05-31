@@ -27,5 +27,13 @@
     "token": "0.a0ks6swv27",
     "key": "6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84118090",
     "tokenCreatedAt": 1777328692999
+  },
+  {
+    "login": "ola",
+    "password": "$2b$10$vHKFdZ2j7QRkX82WNWXcq.3gFtxmvmm1rVKjVtYtB7d6XF5P/5BOq",
+    "role": "user",
+    "token": "0.cyezp7m5vo",
+    "key": "60a5d3e4100fe8afa5ee0103739a45711d50d7f3ba7280d8a95b51f5d04aa4b8",
+    "tokenCreatedAt": 1780232445338
   }
 ]
