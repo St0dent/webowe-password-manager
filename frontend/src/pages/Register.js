@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authService } from '../services/authService';
+import authService from '../services/authService';
 
 export default function Register({ onRegisterSuccess }) {
   const [login, setLogin] = useState('');
@@ -22,18 +22,14 @@ export default function Register({ onRegisterSuccess }) {
     setLoading(true);
 
     try {
-      const result = await authService.register(login, password);
-      if (result.includes('Zarejestrowano')) {
-        setMessage('Registration successful! You can now login.');
-        setLogin('');
-        setPassword('');
-        setConfirmPassword('');
-        setTimeout(onRegisterSuccess, 1500);
-      } else {
-        setError(result);
-      }
+      await authService.register(login, password);
+      setMessage('Registration successful! You can now login.');
+      setLogin('');
+      setPassword('');
+      setConfirmPassword('');
+      setTimeout(onRegisterSuccess, 1500);
     } catch (err) {
-      setError('Network error');
+      setError(err.message || 'Registration failed');
     } finally {
       setLoading(false);
     }

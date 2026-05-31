@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { authService } from './services/authService';
+import authService from './services/authService';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -9,8 +9,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = authService.getToken();
-    if (token) {
+    if (authService.isAuthenticated()) {
       setIsAuthenticated(true);
       setCurrentPage('dashboard');
     }

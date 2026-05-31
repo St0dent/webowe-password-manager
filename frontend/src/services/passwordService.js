@@ -1,51 +1,105 @@
-const API_URL = 'http://localhost:3000';
+import { apiFetch } from './api';
+import authService from './authService';
 
-export const passwordService = {
-  addPassword: async (title, password, token) => {
-    const response = await fetch(`${API_URL}/add`, {
+const passwordService = {
+  add: async (title, password) => {
+    if (!title || !password) {
+      throw new Error('Title and password are required');
+    }
+
+    const response = await apiFetch('/add', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
+      headers: authService.getAuthHeaders(),
       body: JSON.stringify({ title, password })
     });
-    return response.json();
+
+    return response;
   },
 
-  getPasswords: async (token) => {
-    const response = await fetch(`${API_URL}/passwords`, {
+  getAll: async () => {
+    const response = await apiFetch('/passwords', {
       method: 'GET',
-      headers: { 'Authorization': token }
+      headers: authService.getAuthHeaders()
     });
-    return response.json();
+
+    return Array.isArray(response) ? response : [];
   },
 
-  deletePassword: async (id, token) => {
-    const response = await fetch(`${API_URL}/password/${id}`, {
+  get: async (id) => {
+    if (!id) {
+      throw new Error('Password ID is required');
+    }
+
+    const passwords = await passwordService.getAll();
+    const password = passwords.find(p => p.id === id);
+
+    if (!password) {
+      throw new Error('Password not found');
+    }
+
+    return password;
+  },
+
+  delete: async (id) => {
+    if (!id) {
+      throw new Error('Password ID is required');
+    }
+
+    const response = await apiFetch(`/password/${id}`, {
       method: 'DELETE',
-      headers: { 'Authorization': token }
+      headers: authService.getAuthHeaders()
     });
-    return response.json();
+
+    return response;
   },
 
-  updatePassword: async (id, newPassword, token) => {
-    const response = await fetch(`${API_URL}/password/${id}`, {
+  update: async (id, newPassword) => {
+    if (!id || !newPassword) {
+      throw new Error('ID and new password are required');
+    }
+
+    const response = await apiFetch(`/password/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
+      headers: authService.getAuthHeaders(),
       body: JSON.stringify({ newPassword })
     });
-    return response.json();
+
+    return response;
   },
 
-  searchPasswords: async (query, token) => {
-    const response = await fetch(`${API_URL}/search?q=${encodeURIComponent(query)}`, {
-      method: 'GET',
-      headers: { 'Authorization': token }
-    });
-    return response.json();
+  search: async (query) => {
+    if (!query || typeof query !== 'string') {
+      throw new Error('Search query is required');
+    }
+
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length === 0) {
+      return passwordService.getAll();
+    }
+
+    try {
+      const response = await apiFetch(`/search?q=${encodeURIComponent(trimmedQuery)}`, {
+        method: 'GET',
+        headers: authService.getAuthHeaders()
+      });
+
+      return Array.isArray(response) ? response : [];
+    } catch (error) {
+      if (error.status === 404) {
+        return [];
+      }
+      throw error;
+    }
+  },
+
+  searchLocal: (passwords, query) => {
+    if (!query || query.trim().length === 0) {
+      return passwords;
+    }
+
+    const lowerQuery = query.toLowerCase();
+    return passwords.filter(p => p.title.toLowerCase().includes(lowerQuery));
   }
 };
+
+export default passwordService;

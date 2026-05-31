@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authService } from '../services/authService';
+import authService from '../services/authService';
 
 export default function Login({ onLoginSuccess }) {
   const [login, setLogin] = useState('');
@@ -13,14 +13,10 @@ export default function Login({ onLoginSuccess }) {
     setLoading(true);
 
     try {
-      const result = await authService.login(login, password);
-      if (result.token) {
-        onLoginSuccess();
-      } else {
-        setError(result.message || 'Login failed');
-      }
+      await authService.login(login, password);
+      onLoginSuccess();
     } catch (err) {
-      setError('Network error');
+      setError(err.message || 'Login failed');
     } finally {
       setLoading(false);
     }

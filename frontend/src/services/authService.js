@@ -1,38 +1,80 @@
-const API_URL = 'http://localhost:3000';
+import { apiFetch } from './api';
 
-export const authService = {
+const TOKEN_STORAGE_KEY = 'auth_token';
+
+const authService = {
   register: async (login, password) => {
-    const response = await fetch(`${API_URL}/register`, {
+    if (!login || !password) {
+      throw new Error('Login and password are required');
+    }
+
+    const response = await apiFetch('/register', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ login, password })
     });
-    return response.text();
+
+    return response;
   },
 
   login: async (login, password) => {
-    const response = await fetch(`${API_URL}/login`, {
+    if (!login || !password) {
+      throw new Error('Login and password are required');
+    }
+
+    const data = await apiFetch('/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ login, password })
     });
-    const data = await response.json();
-    if (data.token) {
-      localStorage.setItem('token', data.token);
+
+    if (data && data.token) {
+      authService.setToken(data.token);
     }
+
     return data;
   },
 
-  logout: async (token) => {
-    const response = await fetch(`${API_URL}/logout`, {
-      method: 'POST',
-      headers: { 'Authorization': token }
-    });
-    localStorage.removeItem('token');
-    return response.json();
+  logout: async () => {
+    const token = authService.getToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    try {
+      const response = await apiFetch('/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': token
+        }
+      });
+
+      authService.clearToken();
+      return response;
+    } catch (error) {
+      authService.clearToken();
+      throw error;
+    }
   },
 
   getToken: () => {
-    return localStorage.getItem('token');
+    return localStorage.getItem(TOKEN_STORAGE_KEY);
+  },
+
+  setToken: (token) => {
+    localStorage.setItem(TOKEN_STORAGE_KEY, token);
+  },
+
+  clearToken: () => {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+  },
+
+  isAuthenticated: () => {
+    return !!authService.getToken();
+  },
+
+  getAuthHeaders: () => {
+    const token = authService.getToken();
+    return token ? { 'Authorization': token } : {};
   }
 };
+
+export default authService;
