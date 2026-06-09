@@ -32,5 +32,18 @@
     "login": "ola",
     "password": "$2b$10$vHKFdZ2j7QRkX82WNWXcq.3gFtxmvmm1rVKjVtYtB7d6XF5P/5BOq",
     "role": "user"
+  },
+  {
+    "login": "piotrek06",
+    "password": "$2b$10$l4.0GIqkU6k8B6XvSZn/0eslRUs0bYOgLo3rCQSuWHRziV9suYMea",
+    "role": "user"
+  },
+  {
+    "login": "zuza",
+    "password": "$2b$10$3mvh9DT.2Gax4NTsfR7sEOMLXeMKBlrF.XHc6XlXVQPmGndROEmiu",
+    "role": "user",
+    "token": "0.uhy9ughi75",
+    "key": "e3e93b60bd722ced25a041f65afd4e396e2bafe57e0c3de0c8b6b0aa8b054506",
+    "tokenCreatedAt": 1780984692253
   }
 ]

@@ -100,7 +100,6 @@ export default function Header({ username, onLogout }) {
             onMouseLeave={() => setShowDropdown(false)}
           >
             <span>👤</span>
-            {username || 'User'}
           </button>
           {showDropdown && (
             <div style={styles.dropdown} onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
